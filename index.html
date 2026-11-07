@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ملاحة القرى العراقية</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body { margin: 0; padding: 0; font-family: Tahoma, sans-serif; }
+        #map { height: 100vh; width: 100vw; }
+        .header-box {
+            position: absolute;
+            top: 10px; right: 10px; left: 10px;
+            z-index: 1000;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        h3 { margin: 0 0 5px 0; color: #2e7d32; }
+    </style>
+</head>
+<body>
+    <div class="header-box">
+        <h3>ملاحة القرى والأرياف العراقية</h3>
+        <p style="margin:0; font-size: 12px; color: #666;">خريطة تفصيلية للأزقة والمعالم الريفية</p>
+    </div>
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        var map = L.map('map').setView([33.3152, 44.3661], 8);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+        L.marker([33.3500, 44.4000]).addTo(map)
+            .bindPopup('<b>قرية البو صالح</b><br>قرب البزل الرئيسي.').openPopup();
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var lat = position.coords.latitude;
+                var lon = position.coords.longitude;
+                map.setView([lat, lon], 14);
+                L.marker([lat, lon]).addTo(map)
+                    .bindPopup('أنت هنا (موقعك الحالي)').openPopup();
+            });
+        }
+    </script>
+</body>
+</html>
